@@ -1,3 +1,4 @@
+mod cdma;
 fn main() {
     println!(
         "Satellite 8 has sent bit 0 (delta = 72)
