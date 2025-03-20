@@ -9,7 +9,7 @@ impl Chipsequence {
                 Self { arr: [0, 0, 0, 0, 0, 0, 0, 0] }
         }
 
-        pub fn set_bit(&mut self, bit_index: usize) {
+        pub fn set_chip(&mut self, bit_index: usize) {
                 if bit_index > 1022 {
                         return;
                 }
@@ -17,5 +17,12 @@ impl Chipsequence {
                 let inner_bit_index: usize = bit_index - arr_index*128;
 
                 self.arr[arr_index] |= 1 << inner_bit_index;
+        }
+
+        pub fn print_bitwise(&self) {
+                for &value in &self.arr {
+                    // Print each u128 value in binary format
+                    println!("{:0128b}", value);
+                }
         }
 }
