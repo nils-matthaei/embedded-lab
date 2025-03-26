@@ -39,7 +39,7 @@ impl Chipsequence {
                 }
         }
 
-        pub fn correlation_product_with_signal(&self, mut signal: &Vec<i32>, delta: usize) -> Result<i32, &str>{
+        pub fn correlation_product_with_signal(&self, signal: &Vec<i32>, delta: usize) -> Result<i32, &str>{
                 if signal.len() < 1023 { return Err("Signal must contain at least 1023 values."); }
 
                 let shifted_signal: Vec<i32> = {
