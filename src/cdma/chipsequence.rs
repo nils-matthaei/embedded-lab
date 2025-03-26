@@ -20,7 +20,7 @@ impl Chipsequence {
         }
 
         pub fn get_chip(&self, chip_index: usize) -> Result<i32, &str> {
-                if chip_index > 1023 {
+                if chip_index > 1022 {
                         return Err("chip_index must be in range 0..1023");
                 }
 
@@ -32,6 +32,7 @@ impl Chipsequence {
                 Ok(chip)
         }
 
+        #[allow(dead_code)]
         pub fn print_bitwise(&self) {
                 for &value in &self.arr {
                     // Print each u128 value in binary format
@@ -50,8 +51,8 @@ impl Chipsequence {
 
                 let mut result: i32 = 0;
 
-                for i in 0..1023 {
-                        match self.get_chip(1023-i) {
+                for i in 0..1022 {
+                        match self.get_chip(1022 - i) {
                             Ok(chip) => result += shifted_signal[i] + chip,
                             Err(msg) => return Err(msg)
                         }

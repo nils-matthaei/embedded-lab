@@ -23,7 +23,7 @@ fn main() {
         for regsum in REGISTER_SUMS {
                 let mut gen: GoldCodeGenerator = GoldCodeGenerator::new(regsum);
                 let seq: Chipsequence = gen.generate();
-                for delta in 0..1024 {
+                for delta in 0..1023 {
                         let res = seq.correlation_product_with_signal(&signal, delta);
 
                         match res {
