@@ -32,10 +32,10 @@ fn main() {
         }
 
         // decode signal
-        let mut DecodedSignals: Vec<DecodedSignal> = Vec::new();
+        let mut decoded_signals: Vec<DecodedSignal> = Vec::new();
         for (index,sequence) in chipsequences.iter().enumerate() {
                 if let Some(result) = sequence.cross_correlate_with_signal(&signal) {
-                                DecodedSignals.push(DecodedSignal {
+                                decoded_signals.push(DecodedSignal {
                                                 sattelite_id: index + 1,
                                                 bit: result.0,
                                                 delta: result.1
@@ -44,7 +44,7 @@ fn main() {
         }
 
         // print results
-        for dsig in DecodedSignals {
+        for dsig in decoded_signals {
                 println!("Sattelite {} has sent bit {} (delta = {})", dsig.sattelite_id, dsig.bit, dsig.delta);
         }
 }
