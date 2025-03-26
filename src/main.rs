@@ -1,6 +1,6 @@
 mod cdma;
 
-use cdma::{chipsequence::{self, Chipsequence}, gold_codes::{GoldCodeGenerator, REGISTER_SUMS}};
+use cdma::{chipsequence::Chipsequence, gold_codes::{GoldCodeGenerator, REGISTER_SUMS}};
 use std::fs;
 
 struct DecodedSignal {
