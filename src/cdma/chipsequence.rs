@@ -29,7 +29,13 @@ impl Chipsequence {
 
                 let sub_sequence: u128 = self.arr[arr_index];
                 let chip: i32 = (sub_sequence >> inner_bit_index & 0x1) as i32; // precedence of >> stronger than that of &
-                Ok(chip)
+                if chip == 1 {
+                        return Ok(1);
+                } else if chip == 0 {
+                        return Ok( -1 );
+                } else {
+                        return Err("what in tarnation?");
+                }
         }
 
         #[allow(dead_code)]
@@ -53,7 +59,7 @@ impl Chipsequence {
 
                 for i in 0..1022 {
                         match self.get_chip(1022 - i) {
-                            Ok(chip) => result += shifted_signal[i] + chip,
+                            Ok(chip) => result += shifted_signal[i] * chip,
                             Err(msg) => return Err(msg)
                         }
                 }
