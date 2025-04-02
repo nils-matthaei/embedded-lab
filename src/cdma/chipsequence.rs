@@ -75,7 +75,7 @@ impl Chipsequence {
 
                         match self.correlation_product_with_signal(&signal, delta) {
                                 Ok(product) => {
-                                        if product.abs() < 1000 { continue; }
+                                        if product.abs() < 828 /*=1023 - 3 * 65*/ { continue; }
                                         if product < 0 {
                                                 return Some((0,delta));
                                         } else {
