@@ -79,7 +79,6 @@ impl Chipsequence {
                                         if product < 0 {
                                                 return Some((0,delta));
                                         } else {
-                                            return Some((1, delta));
                                         }
                                 }
                                 Err(msg) => print!("Error: {}\n", msg)
