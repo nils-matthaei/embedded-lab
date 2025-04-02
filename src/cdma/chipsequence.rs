@@ -71,7 +71,7 @@ impl Chipsequence {
 
         pub fn cross_correlate_with_signal(&self, signal: &Vec<i32>) -> Option<(i32,usize)> {
 
-                for delta in 0..1023 {
+                for delta in 0..1022 {
 
                         match self.correlation_product_with_signal(&signal, delta) {
                                 Ok(product) => {
@@ -79,6 +79,7 @@ impl Chipsequence {
                                         if product < 0 {
                                                 return Some((0,delta));
                                         } else {
+                                                return Some((1,delta));
                                         }
                                 }
                                 Err(msg) => print!("Error: {}\n", msg)
