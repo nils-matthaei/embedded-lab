@@ -1,5 +1,5 @@
 
-type Chips = [u128; 8];
+type Chips = [i32; 1023];
 
 #[derive(Debug)]
 pub struct Chipsequence {
@@ -8,36 +8,21 @@ pub struct Chipsequence {
 
 impl Chipsequence {
         pub fn new() -> Self {
-                Self { arr: [0, 0, 0, 0, 0, 0, 0, 0] }
+                Self { arr: [-1; 1023] }
         }
 
-        pub fn set_chip(&mut self, bit_index: usize) {
+        pub fn set_chip(&mut self, bit_index: usize, value: i32) {
                 if bit_index > 1022 {
                         return;
                 }
-                let arr_index: usize = bit_index / 128;
-                let inner_bit_index: usize = bit_index - arr_index*128;
-
-                self.arr[arr_index] |= 1 << inner_bit_index;
+                self.arr[bit_index] = value;
         }
 
         pub fn get_chip(&self, chip_index: usize) -> Result<i32, &str> {
                 if chip_index > 1022 {
                         return Err("chip_index must be in range 0..1023");
                 }
-
-                let arr_index: usize = chip_index / 128;
-                let inner_bit_index: usize = chip_index - arr_index*128;
-
-                let sub_sequence: u128 = self.arr[arr_index];
-                let chip: i32 = (sub_sequence >> inner_bit_index & 0x1) as i32; // precedence of >> stronger than that of &
-                if chip == 1 {
-                        return Ok(1);
-                } else if chip == 0 {
-                        return Ok( -1 );
-                } else {
-                        return Err("what in tarnation?");
-                }
+                return Ok(self.arr[chip_index]);
         }
 
         #[allow(dead_code)]
@@ -54,8 +39,9 @@ impl Chipsequence {
                 let mut result: i32 = 0;
 
                 for i in 0..1022 {
+                        let rotated_signal_index = (i + delta) % 1023;
                         match self.get_chip(1022 - i) {
-                            Ok(chip) => result += signal[(i + delta)%1023] * chip,
+                            Ok(chip) => result += signal[rotated_signal_index] * chip,
                             Err(msg) => return Err(msg)
                         }
                 }

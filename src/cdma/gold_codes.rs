@@ -72,7 +72,7 @@ impl GoldCodeGenerator {
                         let chip: u8 = out_top ^ out_bot;
 
                         if chip == 1 {
-                                sequence.set_chip( 1022 - i);
+                                sequence.set_chip( 1022 - i, 1);
                         }
                  }
 
