@@ -51,17 +51,11 @@ impl Chipsequence {
         pub fn correlation_product_with_signal(&self, signal: &Vec<i32>, delta: usize) -> Result<i32, &str>{
                 if signal.len() < 1023 { return Err("Signal must contain at least 1023 values."); }
 
-                let shifted_signal: Vec<i32> = {
-                        let mut signal_copy = signal.clone();
-                        signal_copy.rotate_left(delta); // evil O(n) operation
-                        signal_copy
-                };
-
                 let mut result: i32 = 0;
 
                 for i in 0..1022 {
                         match self.get_chip(1022 - i) {
-                            Ok(chip) => result += shifted_signal[i] * chip,
+                            Ok(chip) => result += signal[(i + delta)%1023] * chip,
                             Err(msg) => return Err(msg)
                         }
                 }
