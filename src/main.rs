@@ -2,6 +2,7 @@ mod cdma;
 
 use cdma::{chipsequence::Chipsequence, gold_codes::{GoldCodeGenerator, REGISTER_SUMS}};
 use std::fs;
+use std::time::Instant;
 
 struct DecodedSignal {
         sattelite_id: usize,
@@ -32,6 +33,7 @@ fn main() {
         }
 
         // decode signal
+        // let start = Instant::now();
         let mut decoded_signals: Vec<DecodedSignal> = Vec::new();
         for (index,sequence) in chipsequences.iter().enumerate() {
                 if let Some(result) = sequence.cross_correlate_with_signal(&signal) {
@@ -42,6 +44,8 @@ fn main() {
                                 });
                 }
         }
+        // let duration = start.elapsed();
+        // println!("Time taken to decode: {:?}", duration);
 
         // print results
         for dsig in decoded_signals {
