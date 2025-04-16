@@ -19,33 +19,35 @@ fn main() {
         let sig_string = fs::read_to_string(&args[1])
             .expect("Could not read file :(");
 
-        let signal: Vec<i32> = sig_string
+        let signal: [i32; 1023] = sig_string
             .split(" ")
             .filter_map(|s| s.trim().parse::<i32>().ok())
-            .collect();
+            .collect::<Vec<_>>()
+            .try_into()
+            .expect("Signal length must be 1023");
 
         // generate chipsequences
-        let mut chipsequences: Vec<Chipsequence> = Vec::new();
-        for regsum in REGISTER_SUMS {
-                let mut gen: GoldCodeGenerator = GoldCodeGenerator::new(regsum);
-                chipsequences.push(gen.generate());
-
-        }
+        let chipsequences: [Chipsequence; REGISTER_SUMS.len()] =
+            std::array::from_fn(|i| {
+                let mut gen = GoldCodeGenerator::new(REGISTER_SUMS[i]);
+                gen.generate()
+            });
 
         // decode signal
-        // let start = Instant::now();
+        let start = Instant::now();
         let mut decoded_signals: Vec<DecodedSignal> = Vec::new();
-        for (index,sequence) in chipsequences.iter().enumerate() {
-                if let Some(result) = sequence.cross_correlate_with_signal(&signal) {
-                                decoded_signals.push(DecodedSignal {
-                                                sattelite_id: index + 1,
-                                                bit: result.0,
-                                                delta: result.1
-                                });
-                }
+        for i in 0..chipsequences.len() {
+            if let Some(result) = chipsequences[i].cross_correlate_with_signal(&signal) {
+                decoded_signals.push(DecodedSignal {
+                    sattelite_id: i + 1,
+                    bit: result.0,
+                    delta: result.1,
+                });
+            }
         }
-        // let duration = start.elapsed();
-        // println!("Time taken to decode: {:?}", duration);
+
+        let duration = start.elapsed();
+        println!("Time taken to decode: {:?}", duration);
 
         // print results
         for dsig in decoded_signals {
