@@ -39,7 +39,7 @@ impl Chipsequence {
                 let mut result: i32 = 0;
 
                 for i in 0..1022 {
-                        let rotated_signal_index = (i + delta) % 1023;
+                        let rotated_signal_index = i + delta;
                         match self.get_chip(1022 - i) {
                             Ok(chip) => result += signal[rotated_signal_index] * chip,
                             Err(msg) => return Err(msg)
